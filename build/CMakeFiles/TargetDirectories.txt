@@ -1,0 +1,4 @@
+/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles/rk_driver.dir
+/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles/rk_driver_debug.dir
+/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles/edit_cache.dir
+/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles/rebuild_cache.dir

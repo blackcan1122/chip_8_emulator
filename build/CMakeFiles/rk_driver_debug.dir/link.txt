@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/rk_driver_debug.dir/link.d CMakeFiles/rk_driver_debug.dir/src/main.cpp.o -o rk_driver_debug  /usr/lib/libhidapi-hidraw.so.0.15.0
