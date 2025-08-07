@@ -1,7 +1,14 @@
 #include <iostream>
+#include "cpu.hpp"
+#include "memory.hpp"
 
 int main()
 {
-    std::cout << "Hello, World!" << std::endl;
+    CPU cpu;
+
+    // Example instruction execution
+    cpu.executeInstruction(Instruction::OOE0);
+    cpu.executeInstruction(Instruction::OOEE);
+
     return 0;
 }

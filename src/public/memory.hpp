@@ -5,8 +5,8 @@
 
 class Memory {
     public:
-        Memory();
-        ~Memory();
+        Memory() = default;
+        ~Memory() = default;
 
         void reset();
         uint8_t read(uint16_t address);

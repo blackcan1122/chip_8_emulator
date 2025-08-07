@@ -64,12 +64,10 @@ CMAKE_BINARY_DIR = /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build
 
 # The main recursive "all" target.
 all: CMakeFiles/chip_8.dir/all
-all: CMakeFiles/chip_8_debug.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/chip_8.dir/codegen
-codegen: CMakeFiles/chip_8_debug.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -78,7 +76,6 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/chip_8.dir/clean
-clean: CMakeFiles/chip_8_debug.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -88,12 +85,12 @@ clean: CMakeFiles/chip_8_debug.dir/clean
 CMakeFiles/chip_8.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=1,2 "Built target chip_8"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=1,2,3,4 "Built target chip_8"
 .PHONY : CMakeFiles/chip_8.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/chip_8.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/chip_8.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles 0
 .PHONY : CMakeFiles/chip_8.dir/rule
@@ -105,45 +102,13 @@ chip_8: CMakeFiles/chip_8.dir/rule
 # codegen rule for target.
 CMakeFiles/chip_8.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=1,2 "Finished codegen for target chip_8"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target chip_8"
 .PHONY : CMakeFiles/chip_8.dir/codegen
 
 # clean rule for target.
 CMakeFiles/chip_8.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/clean
 .PHONY : CMakeFiles/chip_8.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/chip_8_debug.dir
-
-# All Build rule for target.
-CMakeFiles/chip_8_debug.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=3,4 "Built target chip_8_debug"
-.PHONY : CMakeFiles/chip_8_debug.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/chip_8_debug.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/chip_8_debug.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles 0
-.PHONY : CMakeFiles/chip_8_debug.dir/rule
-
-# Convenience name for target.
-chip_8_debug: CMakeFiles/chip_8_debug.dir/rule
-.PHONY : chip_8_debug
-
-# codegen rule for target.
-CMakeFiles/chip_8_debug.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/build/CMakeFiles --progress-num=3,4 "Finished codegen for target chip_8_debug"
-.PHONY : CMakeFiles/chip_8_debug.dir/codegen
-
-# clean rule for target.
-CMakeFiles/chip_8_debug.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/clean
-.PHONY : CMakeFiles/chip_8_debug.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

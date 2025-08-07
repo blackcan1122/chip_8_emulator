@@ -129,26 +129,12 @@ chip_8/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/build
 .PHONY : chip_8/fast
 
-#=============================================================================
-# Target rules for targets named chip_8_debug
-
-# Build rule for target.
-chip_8_debug: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chip_8_debug
-.PHONY : chip_8_debug
-
-# fast build rule for target.
-chip_8_debug/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/build
-.PHONY : chip_8_debug/fast
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
 # target to build an object file
 src/main.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -157,7 +143,6 @@ src/main.i: src/main.cpp.i
 # target to preprocess a source file
 src/main.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -166,8 +151,55 @@ src/main.s: src/main.cpp.s
 # target to generate assembly for a file
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/private/cpu.o: src/private/cpu.cpp.o
+.PHONY : src/private/cpu.o
+
+# target to build an object file
+src/private/cpu.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/cpu.cpp.o
+.PHONY : src/private/cpu.cpp.o
+
+src/private/cpu.i: src/private/cpu.cpp.i
+.PHONY : src/private/cpu.i
+
+# target to preprocess a source file
+src/private/cpu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/cpu.cpp.i
+.PHONY : src/private/cpu.cpp.i
+
+src/private/cpu.s: src/private/cpu.cpp.s
+.PHONY : src/private/cpu.s
+
+# target to generate assembly for a file
+src/private/cpu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/cpu.cpp.s
+.PHONY : src/private/cpu.cpp.s
+
+src/private/memory.o: src/private/memory.cpp.o
+.PHONY : src/private/memory.o
+
+# target to build an object file
+src/private/memory.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/memory.cpp.o
+.PHONY : src/private/memory.cpp.o
+
+src/private/memory.i: src/private/memory.cpp.i
+.PHONY : src/private/memory.i
+
+# target to preprocess a source file
+src/private/memory.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/memory.cpp.i
+.PHONY : src/private/memory.cpp.i
+
+src/private/memory.s: src/private/memory.cpp.s
+.PHONY : src/private/memory.s
+
+# target to generate assembly for a file
+src/private/memory.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/private/memory.cpp.s
+.PHONY : src/private/memory.cpp.s
 
 # Help Target
 help:
@@ -178,10 +210,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... chip_8"
-	@echo "... chip_8_debug"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/private/cpu.o"
+	@echo "... src/private/cpu.i"
+	@echo "... src/private/cpu.s"
+	@echo "... src/private/memory.o"
+	@echo "... src/private/memory.i"
+	@echo "... src/private/memory.s"
 .PHONY : help
 
 

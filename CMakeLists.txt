@@ -5,19 +5,24 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+endif()
+
 find_package(hidapi REQUIRED)
+
 file(GLOB SRC_FILES src/*.cpp)
 file(GLOB SRC_FILES_PRIVATE src/private/*.cpp)
-file(GLOB SRC_FILES_PUBLIC src/public/*.cpp)
 
+set(ALL_SRC_FILES ${SRC_FILES} ${SRC_FILES_PRIVATE})
 
-# Release Configuration
-add_executable(chip_8 ${SRC_FILES})
+add_executable(chip_8 ${ALL_SRC_FILES})
+target_include_directories(chip_8 PRIVATE src/public)
 target_link_libraries(chip_8 PRIVATE hidapi::hidapi)
-target_compile_options(chip_8 PRIVATE -O3 -DNDEBUG)
 
-# Debug Configuration with Symbols
-add_executable(chip_8_debug ${SRC_FILES})
-target_link_libraries(chip_8_debug PRIVATE hidapi::hidapi)
-target_compile_definitions(chip_8_debug PRIVATE DEBUG=1)
-target_compile_options(chip_8_debug PRIVATE -g -O0)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(chip_8 PRIVATE -g -O0 -Wall -Wextra)
+    target_compile_definitions(chip_8 PRIVATE DEBUG=1)
+else()
+    target_compile_options(chip_8 PRIVATE -O3 -DNDEBUG)
+endif()
