@@ -117,38 +117,38 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named rk_driver
+# Target rules for targets named chip_8
 
 # Build rule for target.
-rk_driver: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rk_driver
-.PHONY : rk_driver
+chip_8: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chip_8
+.PHONY : chip_8
 
 # fast build rule for target.
-rk_driver/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver.dir/build.make CMakeFiles/rk_driver.dir/build
-.PHONY : rk_driver/fast
+chip_8/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/build
+.PHONY : chip_8/fast
 
 #=============================================================================
-# Target rules for targets named rk_driver_debug
+# Target rules for targets named chip_8_debug
 
 # Build rule for target.
-rk_driver_debug: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rk_driver_debug
-.PHONY : rk_driver_debug
+chip_8_debug: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chip_8_debug
+.PHONY : chip_8_debug
 
 # fast build rule for target.
-rk_driver_debug/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver_debug.dir/build.make CMakeFiles/rk_driver_debug.dir/build
-.PHONY : rk_driver_debug/fast
+chip_8_debug/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/build
+.PHONY : chip_8_debug/fast
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver.dir/build.make CMakeFiles/rk_driver.dir/src/main.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver_debug.dir/build.make CMakeFiles/rk_driver_debug.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -156,8 +156,8 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver.dir/build.make CMakeFiles/rk_driver.dir/src/main.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver_debug.dir/build.make CMakeFiles/rk_driver_debug.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -165,8 +165,8 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver.dir/build.make CMakeFiles/rk_driver.dir/src/main.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rk_driver_debug.dir/build.make CMakeFiles/rk_driver_debug.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8.dir/build.make CMakeFiles/chip_8.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chip_8_debug.dir/build.make CMakeFiles/chip_8_debug.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -177,8 +177,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... rk_driver"
-	@echo "... rk_driver_debug"
+	@echo "... chip_8"
+	@echo "... chip_8_debug"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
