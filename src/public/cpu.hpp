@@ -2,6 +2,26 @@
 #include <cstdint>
 #include <vector>
 #include "memory.hpp"
+#include "helpers.hpp"
+
+#define V0 0
+#define V1 1
+#define V2 2
+#define V3 3
+#define V4 4
+#define V5 5
+#define V6 6
+#define V7 7
+#define V8 8
+#define V9 9
+#define VA 10
+#define VB 11
+#define VC 12
+#define VD 13
+#define VE 14
+#define VF 15 // Flag
+
+
 
 enum class CPUState {
     RUNNING,
@@ -55,12 +75,17 @@ public:
     void executeInstruction(Instruction instruction);
 
 private:
-    uint8_t m_GPRegister[16]; // General Purpose Registers // V0 to VF (VF is a Flag register))
-    uint16_t m_I; // Index Register
-    std::vector<uint16_t> m_stack; // Stack
-    uint8_t m_PC; // Program Counter
-    uint8_t m_delayTimer; // Delay Timer
-    uint8_t m_soundTimer; // Sound Timer
+    Bit8 m_Registers[16]; // General Purpose Registers // V0 to VF (VF is a Flag register))
+    Bit16 m_Index; // Index Register
+    Bit16 m_Stack[16]; // Stack
+    Bit16 m_SP; // Stack Pointer
+    Bit8 m_Keys[16]; // Keypad state (0-15)
+    Bit16 m_PC; // Program Counter
+    Bit8 m_DelayTimer; // Delay Timer
+    Bit8 m_SoundTimer; // Sound Timer
+    Bit16 opcode; // Current opcode
+
+    CPUState m_State; // Current state of the CPU
 
     inline void OP_OOE0(); // Clear the display
     inline void OP_OOEE(); // Return from a subroutine // Pop Address from Stack to PC

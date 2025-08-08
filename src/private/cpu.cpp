@@ -7,6 +7,12 @@ constexpr CPU::InstructionHandler CPU::s_instructionTable[];
 CPU::CPU()
 {
     std::cout << "CPU initialized." << std::endl;
+    m_PC = InstructionSetStart; // Set Program Counter to start of instruction set
+    m_SP = 0; // Initialize Stack Pointer
+    m_Index = 0; // Initialize Index Register
+    m_DelayTimer = 0; // Initialize Delay Timer
+    m_SoundTimer = 0; // Initialize Sound Timer
+    m_State = CPUState::RUNNING; // Set initial state to Running
 }
 
 
