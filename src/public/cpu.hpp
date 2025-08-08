@@ -61,7 +61,6 @@ private:
     uint8_t m_PC; // Program Counter
     uint8_t m_delayTimer; // Delay Timer
     uint8_t m_soundTimer; // Sound Timer
-    Memory m_memory; // Memory instance
 
     inline void OP_OOE0(); // Clear the display
     inline void OP_OOEE(); // Return from a subroutine // Pop Address from Stack to PC

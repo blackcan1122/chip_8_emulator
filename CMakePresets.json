@@ -29,6 +29,24 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "debug-with-tests",
+            "displayName": "Debug with Tests",
+            "description": "Debug build with unit tests enabled",
+            "inherits": "debug",
+            "cacheVariables": {
+                "BUILD_TESTS": "ON"
+            }
+        },
+        {
+            "name": "release-with-tests",
+            "displayName": "Release with Tests",
+            "description": "Release build with unit tests enabled", 
+            "inherits": "release",
+            "cacheVariables": {
+                "BUILD_TESTS": "ON"
+            }
         }
     ],
     "buildPresets": [
@@ -43,6 +61,26 @@
         {
             "name": "release",
             "configurePreset": "release"
+        },
+        {
+            "name": "debug-with-tests",
+            "configurePreset": "debug-with-tests"
+        },
+        {
+            "name": "release-with-tests",
+            "configurePreset": "release-with-tests"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "debug-tests",
+            "configurePreset": "debug-with-tests",
+            "description": "Run unit tests in debug mode"
+        },
+        {
+            "name": "release-tests", 
+            "configurePreset": "release-with-tests",
+            "description": "Run unit tests in release mode"
         }
     ]
 }
