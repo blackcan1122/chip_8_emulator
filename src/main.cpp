@@ -2,16 +2,18 @@
 #include "cpu.hpp"
 #include "memory.hpp"
 #include "CHIP8.hpp"
+#include <thread>
+#include <chrono>
 
 int main()
 {
     CHIP8 chip8;
-    CPU& cpu = *chip8.getCPU();
-    Memory& memory = *chip8.getMemory();
-
-    // Example instruction execution
-    cpu.executeInstruction(Instruction::OOE0);
-    cpu.executeInstruction(Instruction::OOEE);
+    chip8.LoadRom("/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/roms/Tetris [Fran Dachille, 1991].ch8");
+    while (true) {
+        chip8.getCPU()->cycle(); // Execute one CPU cycle
+        chip8.getDisplay()->Draw(); // Draw the display
+        std::this_thread::sleep_for(std::chrono::milliseconds(16)); // Sleep for 16ms to simulate ~60Hz refresh rate
+    }
 
     return 0;
 }

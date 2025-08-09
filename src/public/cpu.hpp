@@ -21,6 +21,9 @@
 #define VE 14
 #define VF 15 // Flag
 
+#define VIDEO_WIDTH 64
+#define VIDEO_HEIGHT 32
+
 
 
 enum class CPUState {
@@ -51,7 +54,7 @@ enum class Instruction {
     XY09, // Skip next instruction if Vx != Vy (9XY0)
     ANNN, // Set I = NNN
     BNNN, // Jump to address NNN + V0
-    CXNN, // Set Vx = random number AND NN
+    CXKK, // Set Vx = random number AND NN
     DXYN, // Draw N-byte sprite at (VX,VY)
     EX9E, // Skip next instruction if key VX is pressed
     EXA1, // Skip next instruction if key VX is not pressed
@@ -66,15 +69,20 @@ enum class Instruction {
     FX65  // Read registers V0 through Vx from memory starting at location I
 };
 
+// Forward
+class CHIP8;
+
 class CPU {
 public:
-    CPU();
+    CPU(CHIP8 *Outter);
     ~CPU() = default;
 
     void reset();
-    void executeInstruction(Instruction instruction);
+    void cycle(); // Main CPU cycle - fetch, decode, execute
 
 private:
+    friend class CHIP8;
+    friend class Display;
     Bit8 m_Registers[16]; // General Purpose Registers // V0 to VF (VF is a Flag register))
     Bit16 m_Index; // Index Register
     Bit16 m_Stack[16]; // Stack
@@ -83,10 +91,16 @@ private:
     Bit16 m_PC; // Program Counter
     Bit8 m_DelayTimer; // Delay Timer
     Bit8 m_SoundTimer; // Sound Timer
-    Bit16 opcode; // Current opcode
+    Bit16 m_OPcode; // Current opcode
+
+    uint32_t m_Video[VIDEO_WIDTH * VIDEO_HEIGHT]; // Video memory (64x32 pixels)
 
     CPUState m_State; // Current state of the CPU
 
+    CHIP8 *m_Outer;
+
+    // Instruction implementations
+    inline void OP_NULL(); // Invalid/unimplemented opcode
     inline void OP_OOE0(); // Clear the display
     inline void OP_OOEE(); // Return from a subroutine // Pop Address from Stack to PC
     inline void OP_1NNN(); // Jump to address NNN
@@ -108,7 +122,7 @@ private:
     inline void OP_9XY0(); // Skip next instruction if Vx != Vy
     inline void OP_ANNN(); // Set I = NNN
     inline void OP_BNNN(); // Jump to address NNN + V
-    inline void OP_CXNN(); // Set Vx = random number AND NN
+    inline void OP_CXKK(); // Set Vx = random number AND NN
     inline void OP_DXYN(); // Draw N-byte sprite at (VX,VY)
     inline void OP_EX9E(); // Skip next instruction if key VX is pressed
     inline void OP_EXA1(); // Skip next instruction if key VX is not pressed
@@ -122,44 +136,21 @@ private:
     inline void OP_FX55(); // Store registers V0 through Vx in memory starting at location I
     inline void OP_FX65(); // Read registers V0 through Vx from memory starting at location I
 
+    // Table dispatcher functions
+    inline void Table0(); // Handle 0x0XXX opcodes
+    inline void Table8(); // Handle 0x8XXX opcodes
+    inline void TableE(); // Handle 0xEXXX opcodes
+    inline void TableF(); // Handle 0xFXXX opcodes
+
     // Function pointer type for instruction handlers
     using InstructionHandler = void (CPU::*)();
     
-    // Array of function pointers indexed by instruction enum
-    static constexpr InstructionHandler s_instructionTable[] = {
-        &CPU::OP_OOE0,  // Instruction::OOE0
-        &CPU::OP_OOEE,  // Instruction::OOEE
-        &CPU::OP_1NNN,  // Instruction::NNN1
-        &CPU::OP_2NNN,  // Instruction::NNN2
-        &CPU::OP_3XNN,  // Instruction::XNN3
-        &CPU::OP_4XNN,  // Instruction::XNN4
-        &CPU::OP_5XY0,  // Instruction::XY05
-        &CPU::OP_6XNN,  // Instruction::XNN6
-        &CPU::OP_7XNN,  // Instruction::XNN7
-        &CPU::OP_8XY0,  // Instruction::XY08
-        &CPU::OP_8XY1,  // Instruction::XY18
-        &CPU::OP_8XY2,  // Instruction::XY28
-        &CPU::OP_8XY3,  // Instruction::XY38
-        &CPU::OP_8XY4,  // Instruction::XY48
-        &CPU::OP_8XY5,  // Instruction::XY58
-        &CPU::OP_8XY6,  // Instruction::XY68
-        &CPU::OP_8XY7,  // Instruction::XY78
-        &CPU::OP_8XYE,  // Instruction::XYE8
-        &CPU::OP_9XY0,  // Instruction::XY09
-        &CPU::OP_ANNN,  // Instruction::ANNN
-        &CPU::OP_BNNN,  // Instruction::BNNN
-        &CPU::OP_CXNN,  // Instruction::CXNN
-        &CPU::OP_DXYN,  // Instruction::DXYN
-        &CPU::OP_EX9E,  // Instruction::EX9E
-        &CPU::OP_EXA1,  // Instruction::EXA1
-        &CPU::OP_FX07,  // Instruction::FX07
-        &CPU::OP_FX0A,  // Instruction::FX0A
-        &CPU::OP_FX15,  // Instruction::FX15
-        &CPU::OP_FX18,  // Instruction::FX18
-        &CPU::OP_FX1E,  // Instruction::FX1E
-        &CPU::OP_FX29,  // Instruction::FX29
-        &CPU::OP_FX33,  // Instruction::FX33
-        &CPU::OP_FX55,  // Instruction::FX55
-        &CPU::OP_FX65   // Instruction::FX65
-    };
+    // Main instruction table (indexed by first nibble)
+    InstructionHandler m_Table[0x10];
+    
+    // Sub-tables for opcodes that require further decoding
+    InstructionHandler m_Table0[0x10];  // 0x00XX opcodes
+    InstructionHandler m_Table8[0x10];  // 0x8XYX opcodes
+    InstructionHandler m_TableE[0x10];  // 0xEXXX opcodes
+    InstructionHandler m_TableF[0x70];  // 0xFXXX opcodes (up to 0x65)
 };

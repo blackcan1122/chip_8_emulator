@@ -2,10 +2,27 @@
 #include "cpu.hpp"
 #include "memory.hpp"
 #include <string>
+#include "Display.hpp"
 
 const unsigned int FONTSET_SIZE = 80;
 
-uint8_t Fontset[FONTSET_SIZE] =
+class CHIP8 {
+public:
+    CHIP8();
+    ~CHIP8();
+
+    void LoadRom(std::string RomPath);
+
+    CPU* getCPU() const { return m_CPU; }
+    Memory* getMemory() const { return m_MEMORY; }
+    Display* getDisplay() const { return m_Display; }
+
+private:
+    CPU *m_CPU;
+    Memory *m_MEMORY;
+    Display* m_Display;
+
+    uint8_t Fontset[FONTSET_SIZE] =
 {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 	0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -24,18 +41,4 @@ uint8_t Fontset[FONTSET_SIZE] =
 	0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
 	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
-
-class CHIP8 {
-public:
-    CHIP8();
-    ~CHIP8();
-
-    void LoadRom(std::string RomPath);
-
-    CPU* getCPU() const { return m_CPU; }
-    Memory* getMemory() const { return m_MEMORY; }
-
-private:
-    CPU *m_CPU;
-    Memory *m_MEMORY;
 };
