@@ -13,14 +13,12 @@ public:
 
     void LoadRom(std::string RomPath);
 
-    CPU* getCPU() const { return m_CPU; }
-    Memory* getMemory() const { return m_MEMORY; }
-    Display* getDisplay() const { return m_Display; }
+    CPU* getCPU() { return m_CPU; }
+    Memory* getMemory() { return m_MEMORY; }
 
 private:
     CPU *m_CPU;
     Memory *m_MEMORY;
-    Display* m_Display;
 
     uint8_t Fontset[FONTSET_SIZE] =
 {

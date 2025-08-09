@@ -80,9 +80,11 @@ public:
     void reset();
     void cycle(); // Main CPU cycle - fetch, decode, execute
 
+    void* getVideoBuffer() { return m_Video; }
+    uint8_t* getKeys() { return m_Keys; }
+
 private:
     friend class CHIP8;
-    friend class Display;
     Bit8 m_Registers[16]; // General Purpose Registers // V0 to VF (VF is a Flag register))
     Bit16 m_Index; // Index Register
     Bit16 m_Stack[16]; // Stack

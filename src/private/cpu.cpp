@@ -2,7 +2,8 @@
 #include <iostream>
 #include "CHIP8.hpp"
 #include "Display.hpp"
-#include "Input.hpp"
+#include "Plattform.hpp"
+#include <cstring>
 
 // Constructor
 CPU::CPU(CHIP8 *Outter)
@@ -79,6 +80,8 @@ CPU::CPU(CHIP8 *Outter)
     m_TableF[0x33] = &CPU::OP_FX33;
     m_TableF[0x55] = &CPU::OP_FX55;
     m_TableF[0x65] = &CPU::OP_FX65;
+
+    std::memset(m_Video, 0x0, sizeof(m_Video)); // Initialize video memory to black
 }
 
 
@@ -90,6 +93,7 @@ void CPU::reset()
 // Main CPU cycle - fetch, decode, execute
 void CPU::cycle()
 {
+
     m_OPcode = (m_Outer->getMemory()->read(m_PC) << 8u) | m_Outer->getMemory()->read(m_PC + 1u);
 
     // Increment PC before executing instruction
@@ -106,14 +110,6 @@ void CPU::cycle()
     if (m_SoundTimer > 0)
     {
         --m_SoundTimer;
-    }
-    bool ShouldQuit = ProcessInput(m_Keys); // Initialize keypad state
-
-    if (ShouldQuit)
-    {
-        m_State = CPUState::HALTED; // Set CPU state to HALTED
-        std::cout << "CPU halted due to input." << std::endl;
-        return;
     }
 }
 
@@ -145,11 +141,9 @@ inline void CPU::OP_NULL()
     m_State = CPUState::ERROR;
 }
 
-// Instruction implementations
 inline void CPU::OP_OOE0()
 {
-    m_Outer->getDisplay()->ClearBuffer(); // Clear the display
-    system("clear"); // Clear the console output
+    std::memset(m_Video, 0x00000000, sizeof(m_Video));
 }
 
 inline void CPU::OP_OOEE()
@@ -327,34 +321,35 @@ inline void CPU::OP_CXKK()
 inline void CPU::OP_DXYN()
 {
     Bit8 Vx = (m_OPcode & 0x0F00u) >> 8u;
-	Bit8 Vy = (m_OPcode & 0x00F0u) >> 4u;
-	Bit8 height = m_OPcode & 0x000Fu;
+    Bit8 Vy = (m_OPcode & 0x00F0u) >> 4u;
+    Bit8 height = m_OPcode & 0x000Fu;
 
-	Bit8 xPos = m_Registers[Vx] % VIDEO_WIDTH;
-	Bit8 yPos = m_Registers[Vy] % VIDEO_HEIGHT;
+    Bit8 xPos = m_Registers[Vx] % VIDEO_WIDTH;
+    Bit8 yPos = m_Registers[Vy] % VIDEO_HEIGHT;
 
-	m_Registers[0xF] = 0;
+    m_Registers[0xF] = 0;
 
-	for (unsigned int row = 0; row < height; ++row)
-	{
+    for (unsigned int row = 0; row < height; ++row)
+    {
         Bit8 SpriteByte = m_Outer->getMemory()->read(m_Index + row);
 
-		for (unsigned int col = 0; col < 8; ++col)
-		{
-			Bit8 SpritePixel = SpriteByte & (0x80u >> col);
-			uint32_t* ScreenPixel = &m_Video[(yPos + row) * VIDEO_WIDTH + (xPos + col)];
-
-			if (SpritePixel)
-			{
-				if (*ScreenPixel == 0xFFFFFFFF)
-				{
-					m_Registers[0xF] = 1;
-				}
-
-				*ScreenPixel ^= 0xFFFFFFFF;
-			}
-		}
-	}
+        for (unsigned int col = 0; col < 8; ++col)
+        {
+            Bit8 SpritePixel = SpriteByte & (0x80u >> col);
+            
+            uint32_t screenIndex = (yPos + row) * VIDEO_WIDTH + (xPos + col);
+            
+            if ((xPos + col) < VIDEO_WIDTH && (yPos + row) < VIDEO_HEIGHT)
+            {
+                if (SpritePixel) {
+                    if (m_Video[screenIndex] != 0) {
+                        m_Registers[0xF] = 1;
+                    }
+                    m_Video[screenIndex] ^= 0xFFFFFFFF;
+                }
+            }
+        }
+    }
 }
 
 inline void CPU::OP_EX9E()
@@ -389,7 +384,6 @@ inline void CPU::OP_FX0A()
     for (int i = 0; i < 16; ++i) 
     {
         if (m_Keys[i]) {
-            std::cout << "Key " << i << " pressed." << std::endl;
             m_Registers[Vx] = i;
             keyPressed = true;
             break;

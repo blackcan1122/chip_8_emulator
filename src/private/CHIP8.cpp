@@ -6,7 +6,6 @@ CHIP8::CHIP8()
 {
     m_CPU = new CPU(this);
     m_MEMORY = new Memory();
-    m_Display = new Display(this);
     
     
     for (unsigned int i = 0; i < FONTSET_SIZE; ++i) {
