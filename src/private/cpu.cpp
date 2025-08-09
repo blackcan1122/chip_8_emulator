@@ -2,6 +2,7 @@
 #include <iostream>
 #include "CHIP8.hpp"
 #include "Display.hpp"
+#include "Input.hpp"
 
 // Constructor
 CPU::CPU(CHIP8 *Outter)
@@ -89,13 +90,11 @@ void CPU::reset()
 // Main CPU cycle - fetch, decode, execute
 void CPU::cycle()
 {
-    // Fetch instruction from memory
     m_OPcode = (m_Outer->getMemory()->read(m_PC) << 8u) | m_Outer->getMemory()->read(m_PC + 1u);
 
     // Increment PC before executing instruction
     m_PC += 2;
 
-    // Decode and execute instruction using function table
     ((*this).*(m_Table[(m_OPcode & 0xF000u) >> 12u]))();
 
     // Update timers
@@ -107,6 +106,14 @@ void CPU::cycle()
     if (m_SoundTimer > 0)
     {
         --m_SoundTimer;
+    }
+    bool ShouldQuit = ProcessInput(m_Keys); // Initialize keypad state
+
+    if (ShouldQuit)
+    {
+        m_State = CPUState::HALTED; // Set CPU state to HALTED
+        std::cout << "CPU halted due to input." << std::endl;
+        return;
     }
 }
 
@@ -382,6 +389,7 @@ inline void CPU::OP_FX0A()
     for (int i = 0; i < 16; ++i) 
     {
         if (m_Keys[i]) {
+            std::cout << "Key " << i << " pressed." << std::endl;
             m_Registers[Vx] = i;
             keyPressed = true;
             break;

@@ -20,7 +20,7 @@ void Display::Draw()
         {
             uint32_t pixel = m_Outer->getCPU()->m_Video[y * VIDEO_WIDTH + x];
 
-            std::cout << (pixel == 0xFFFFFFFF ? "█" : "░");
+            std::cout << (pixel == 0xFFFFFFFF ? " " : "█");
         }
         std::cout << std::endl;
     }

@@ -8,7 +8,7 @@
 int main()
 {
     CHIP8 chip8;
-    chip8.LoadRom("/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/roms/Tetris [Fran Dachille, 1991].ch8");
+    chip8.LoadRom("/home/blackcan/Documents/Hax0rStuff/CHIP_8_EMU/roms/Pong (1 player).ch8");
     while (true) {
         chip8.getCPU()->cycle(); // Execute one CPU cycle
         chip8.getDisplay()->Draw(); // Draw the display

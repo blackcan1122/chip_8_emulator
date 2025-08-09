@@ -10,6 +10,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
+find_package(SDL3 REQUIRED)
+
 file(GLOB SRC_FILES src/*.cpp)
 file(GLOB SRC_FILES_PRIVATE src/private/*.cpp)
 
@@ -17,6 +19,9 @@ set(ALL_SRC_FILES ${SRC_FILES} ${SRC_FILES_PRIVATE})
 
 add_executable(chip_8 ${ALL_SRC_FILES})
 target_include_directories(chip_8 PRIVATE src/public)
+target_link_libraries(chip_8 
+    SDL3::SDL3
+)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(chip_8 PRIVATE -g -O0 -Wall -Wextra)
