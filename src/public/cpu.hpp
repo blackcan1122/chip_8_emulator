@@ -77,8 +77,9 @@ public:
     CPU(CHIP8 *Outter);
     ~CPU() = default;
 
-    void reset();
-    void cycle(); // Main CPU cycle - fetch, decode, execute
+    void Reset();
+    void Cycle(); // Main CPU cycle - fetch, decode, execute
+    void UpdateTimers(); // Update timers (delay and sound)
 
     void* getVideoBuffer() { return m_Video; }
     uint8_t* getKeys() { return m_Keys; }

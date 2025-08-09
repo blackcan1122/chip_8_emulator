@@ -86,12 +86,12 @@ CPU::CPU(CHIP8 *Outter)
 
 
 // Reset function
-void CPU::reset()
+void CPU::Reset()
 {
 }
 
 // Main CPU cycle - fetch, decode, execute
-void CPU::cycle()
+void CPU::Cycle()
 {
 
     m_OPcode = (m_Outer->getMemory()->read(m_PC) << 8u) | m_Outer->getMemory()->read(m_PC + 1u);
@@ -101,6 +101,11 @@ void CPU::cycle()
 
     ((*this).*(m_Table[(m_OPcode & 0xF000u) >> 12u]))();
 
+
+}
+
+void CPU::UpdateTimers()
+{
     // Update timers
     if (m_DelayTimer > 0)
     {
@@ -379,7 +384,8 @@ inline void CPU::OP_FX07()
 inline void CPU::OP_FX0A()
 {
     Bit8 Vx = (m_OPcode & 0x0F00u) >> 8u;
-    // Wait for a key press
+    
+    // Check if any key is currently pressed
     bool keyPressed = false;
     for (int i = 0; i < 16; ++i) 
     {
@@ -389,9 +395,12 @@ inline void CPU::OP_FX0A()
             break;
         }
     }
+    
+    // If no key pressed, decrement PC to repeat this instruction next cycle
     if (!keyPressed) {
         m_PC -= 2;
     }
+    // If key was pressed, instruction completes and PC advances normally
 }
 
 inline void CPU::OP_FX15()

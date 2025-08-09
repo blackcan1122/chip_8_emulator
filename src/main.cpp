@@ -7,6 +7,13 @@
 #include "Plattform.hpp"
 #include <filesystem>
 #include <cstring>
+#include "SDL3/SDL.h"
+
+const int CPU_HZ = 500; // CHIP-8 CPU speed
+const int DISPLAY_HZ = 60; // Display refresh rate
+const int CYCLES_PER_FRAME = CPU_HZ / DISPLAY_HZ; // ~11-12 cycles per frame
+
+typedef std::chrono::_V2::system_clock::time_point TimePoint;
 
 int main(int argc, char* argv[])
 {
@@ -33,15 +40,23 @@ int main(int argc, char* argv[])
 
     CHIP8 chip8;
     chip8.LoadRom(RomPath);
+    TimePoint LastTick;
     while (true) 
     {
         bool should_exit = platform.ProcessInput(chip8.getCPU()->getKeys());
         if (should_exit) {
             break;
         }
-        chip8.getCPU()->cycle(); // Execute one CPU cycle
+    
+        // Run multiple CPU cycles per display frame
+        for (int i = 0; i < CYCLES_PER_FRAME; ++i) {
+            chip8.getCPU()->Cycle();
+        }
+    
+        chip8.getCPU()->UpdateTimers();
         platform.Update(chip8.getCPU()->getVideoBuffer(), VIDEO_WIDTH * sizeof(uint32_t));
-        std::this_thread::sleep_for(std::chrono::milliseconds(16)); // ~60 FPS
+
+        SDL_Delay(16); // 60 FPS for display updates
     }
 
     return 0;
