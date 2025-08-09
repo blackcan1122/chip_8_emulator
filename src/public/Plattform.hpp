@@ -9,7 +9,7 @@ class Platform
 public:
 Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
 {
-    if (SDL_Init(SDL_INIT_VIDEO)) 
+    if (SDL_Init(SDL_INIT_VIDEO) == false) 
     {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
         return;
