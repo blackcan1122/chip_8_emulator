@@ -83,7 +83,7 @@ jobs:
         path: |
           ${{ steps.strings.outputs.build-output-dir }}/*.exe
           ${{ steps.strings.outputs.build-output-dir }}/chip_8_emulator
-          ${{ steps.strings.outputs.build-output-dir }}/chip8*
+          ${{ steps.strings.outputs.build-output-dir }}/chip_8*
           if-no-files-found: warn
 
     - name: Test
