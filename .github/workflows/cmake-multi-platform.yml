@@ -16,33 +16,33 @@ jobs:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
       fail-fast: false
 
-      # Set up a matrix to run the following 3 configurations:
-      # 1. <Windows, Release, latest MSVC compiler toolchain on the default runner image, default generator>
-      # 2. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
-      # 3. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
+      # Set up a matrix to run the following configurations:
+      # 1. <Linux, Release, latest GCC compiler toolchain on the default runner image, default generator>
+      # 2. <Linux, Release, latest Clang compiler toolchain on the default runner image, default generator>
+      # 3. <Linux, Release, MinGW cross-compilation for Windows, Ninja generator>
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang, cl]
+        c_compiler: [gcc, clang, mingw-cross]
         include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            generator: "Unix Makefiles"
+            platform: "linux"
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
+            generator: "Unix Makefiles"
+            platform: "linux"
           - os: ubuntu-latest
-            c_compiler: cl
+            c_compiler: mingw-cross
+            cpp_compiler: mingw-cross
+            generator: "Ninja"
+            platform: "windows"
+            toolchain_file: "mingw-w64-toolchain.cmake"
 
     steps:
     - uses: actions/checkout@v4
@@ -50,14 +50,14 @@ jobs:
         submodules: recursive
 
       # Install Windows 11 SDK instead of Windows 10 SDK
-    - name: Install Windows 11 SDK
-      if: matrix.os == 'windows-latest'
+    - name: Install Windows dependencies (MinGW cross-compilation)
+      if: matrix.c_compiler == 'mingw-cross'
       run: |
-        # Install Visual Studio Build Tools 2022 with Windows 11 SDK
-        choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.Windows11SDK.22621" --no-progress --yes
+        sudo apt-get update
+        sudo apt-get install -y gcc-mingw-w64 g++-mingw-w64 ninja-build
         
     - name: Install Linux build dependencies
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.c_compiler != 'mingw-cross'
       run: |
           sudo apt-get update
           sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libdrm-dev libgbm-dev wayland-protocols libwayland-dev libunwind-dev
@@ -72,25 +72,38 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DSDL_DISABLE_GAMEINPUT=ON
-        -S ${{ github.workspace }}
+      run: |
+        if [ "${{ matrix.c_compiler }}" = "mingw-cross" ]; then
+          cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/${{ matrix.toolchain_file }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -G "${{ matrix.generator }}" \
+            -S ${{ github.workspace }}
+        else
+          cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -G "${{ matrix.generator }}" \
+            -S ${{ github.workspace }}
+        fi
 
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: |
+        if [ "${{ matrix.generator }}" = "Ninja" ]; then
+          ninja -C ${{ steps.strings.outputs.build-output-dir }}
+        else
+          cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+        fi
 
     - name: Upload executable artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: chip8-emulator-${{ matrix.os }}-${{ matrix.c_compiler }}
+        name: chip8-emulator-${{ matrix.platform }}-${{ matrix.c_compiler }}
         path: |
           ${{ steps.strings.outputs.build-output-dir }}/*.exe
-          ${{ steps.strings.outputs.build-output-dir }}/chip_8_emulator
+          ${{ steps.strings.outputs.build-output-dir }}/chip_8
           ${{ steps.strings.outputs.build-output-dir }}/chip_8*
         if-no-files-found: warn
 
