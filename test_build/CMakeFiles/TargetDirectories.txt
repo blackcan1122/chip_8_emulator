@@ -1,0 +1,8 @@
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/CMakeFiles/chip_8.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/CMakeFiles/edit_cache.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/CMakeFiles/rebuild_cache.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/thirdparty/SDL/CMakeFiles/SDL3-shared.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/thirdparty/SDL/CMakeFiles/SDL3_test.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/thirdparty/SDL/CMakeFiles/SDL_uclibc.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/thirdparty/SDL/CMakeFiles/edit_cache.dir
+/home/runner/work/chip_8_emulator/chip_8_emulator/test_build/thirdparty/SDL/CMakeFiles/rebuild_cache.dir
