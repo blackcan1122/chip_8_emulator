@@ -105,6 +105,7 @@ jobs:
           ${{ steps.strings.outputs.build-output-dir }}/*.exe
           ${{ steps.strings.outputs.build-output-dir }}/chip_8
           ${{ steps.strings.outputs.build-output-dir }}/chip_8*
+          ${{ steps.strings.outputs.build-output-dir }}/thirdparty/SDL/*.dll
         if-no-files-found: warn
 
     - name: Test
