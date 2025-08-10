@@ -44,3 +44,11 @@
 /build/*
 /roms/
 /roms/*
+# Build directories
+build*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+.ninja_deps
+.ninja_log
+build.ninja
