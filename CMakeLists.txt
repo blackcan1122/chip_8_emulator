@@ -10,8 +10,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Build SDL3 from source
-set(SDL_SHARED ON CACHE BOOL "Build a shared version of the library")
-set(SDL_STATIC OFF CACHE BOOL "Build a static version of the library")
+set(SDL_SHARED OFF CACHE BOOL "Build a shared version of the library")
+set(SDL_STATIC ON CACHE BOOL "Build a static version of the library")
 set(SDL_TEST OFF CACHE BOOL "Build the SDL test programs")
 set(SDL_EXAMPLES OFF CACHE BOOL "Build the SDL example programs")
 
@@ -54,7 +54,7 @@ target_include_directories(chip_8 PRIVATE src/public)
 
 # Link with SDL3 (now built from source)
 target_link_libraries(chip_8 
-    SDL3::SDL3
+    SDL3::SDL3-static
 )
 
 # Platform-specific linking for Windows MinGW
