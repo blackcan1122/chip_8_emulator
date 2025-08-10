@@ -49,11 +49,12 @@ jobs:
       with:
         submodules: recursive
 
-      # Install Windows 10 SDK (if needed)
-    - name: Ensure Windows 10 SDK is installed
+      # Install Windows 11 SDK instead of Windows 10 SDK
+    - name: Install Windows 11 SDK
       if: matrix.os == 'windows-latest'
       run: |
-        choco install windows-sdk-10-version-2104-all --no-progress --yes
+        # Install Visual Studio Build Tools 2022 with Windows 11 SDK
+        choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.Windows11SDK.22621" --no-progress --yes
         
     - name: Install Linux build dependencies
       if: matrix.os == 'ubuntu-latest'
@@ -76,6 +77,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DSDL_DISABLE_GAMEINPUT=ON
         -S ${{ github.workspace }}
 
     - name: Build
@@ -90,7 +92,7 @@ jobs:
           ${{ steps.strings.outputs.build-output-dir }}/*.exe
           ${{ steps.strings.outputs.build-output-dir }}/chip_8_emulator
           ${{ steps.strings.outputs.build-output-dir }}/chip_8*
-          if-no-files-found: warn
+        if-no-files-found: warn
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
