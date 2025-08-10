@@ -15,6 +15,12 @@ set(SDL_STATIC OFF CACHE BOOL "Build a static version of the library")
 set(SDL_TEST OFF CACHE BOOL "Build the SDL test programs")
 set(SDL_EXAMPLES OFF CACHE BOOL "Build the SDL example programs")
 
+# Disable GameInput support on Windows to avoid build issues
+# GameInput requires special Windows SDK components not available in standard CI runners
+if(WIN32)
+    set(SDL_DISABLE_GAMEINPUT ON CACHE BOOL "Disable GameInput support")
+endif()
+
 # Disable some SDL3 features that might cause cross-compilation issues
 if(CMAKE_CROSSCOMPILING)
     set(SDL_RENDER_D3D OFF CACHE BOOL "Enable the Direct3D render driver")
