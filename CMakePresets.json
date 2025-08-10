@@ -13,6 +13,30 @@
             }
         },
         {
+            "name": "Windows Release",
+            "displayName": "Windows Release Config",
+            "description": "Release build for Windows using MinGW cross-compilation",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/mingw-w64-toolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "Windows Debug",
+            "displayName": "Windows Debug Config",
+            "description": "Debug build for Windows using MinGW cross-compilation",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "${sourceDir}/mingw-w64-toolchain.cmake",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
             "name": "debug",
             "displayName": "Debug Config",
             "description": "Debug build with symbols",
@@ -53,6 +77,14 @@
         {
             "name": "default",
             "configurePreset": "default"
+        },
+        {
+            "name": "Windows Release",
+            "configurePreset": "Windows Release"
+        },
+        {
+            "name": "Windows Debug",
+            "configurePreset": "Windows Debug"
         },
         {
             "name": "debug",

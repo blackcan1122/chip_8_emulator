@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <termios.h>
 #include <unistd.h>
 #include "SDL3/SDL.h"
 
